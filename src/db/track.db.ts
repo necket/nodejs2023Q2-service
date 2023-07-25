@@ -1,14 +1,13 @@
 import { NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { Track } from './types/Track';
-import { mockTracks } from './mockData/mockTracks';
 import { db } from './db';
 
 export class TrackDb {
   private tracks: Track[] = [];
 
   constructor() {
-    this.tracks = mockTracks;
+    this.tracks = [];
   }
 
   public findById = (id: string) => {
