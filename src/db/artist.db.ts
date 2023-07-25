@@ -55,6 +55,7 @@ export class ArtistDb {
     this.artists = this.artists.filter((art) => art.id !== id);
 
     db.track.deleteArtist(id);
+    db.album.deleteArtist(id);
 
     return null;
   };

@@ -19,7 +19,7 @@ export const mockTracks: Track[] = [
     id: '7c0ba607-98b8-4194-8554-b5f7f869dff6',
     name: 'Track #3',
     artistId: '22170e82-ceba-4f2f-acf9-ecba071985c7',
-    albumId: null,
+    albumId: '2d39c63f-4337-4aa5-91c6-0676a91195c8',
     duration: 320,
   },
 ];
