@@ -1,0 +1,27 @@
+### Get all favorites
+GET http://localhost:4000/favs
+Content-Type: application/json
+
+### Add favorite track
+POST http://localhost:4000/favs/track/749f749a-b841-4a67-a529-ecc625c47b9e
+Content-Type: application/json
+
+### Add favorite album
+POST http://localhost:4000/favs/album/b73c84a2-0542-4064-a8f8-7e7f66f27d01
+Content-Type: application/json
+
+### Add favorite artist
+POST http://localhost:4000/favs/artist/486f0707-15db-4352-ae34-04342f91f353
+Content-Type: application/json
+
+### Remove favorite track
+DELETE http://localhost:4000/favs/track/749f749a-b841-4a67-a529-ecc625c47b9e
+Content-Type: application/json
+
+### Remove favorite album
+DELETE http://localhost:4000/favs/album/b73c84a2-0542-4064-a8f8-7e7f66f27d01
+Content-Type: application/json
+
+### Remove favorite artist
+DELETE http://localhost:4000/favs/artist/486f0707-15db-4352-ae34-04342f91f353
+Content-Type: application/json

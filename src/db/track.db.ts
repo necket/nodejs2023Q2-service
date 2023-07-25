@@ -2,6 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { Track } from './types/Track';
 import { mockTracks } from './mockData/mockTracks';
+import { db } from './db';
 
 export class TrackDb {
   private tracks: Track[] = [];
@@ -18,6 +19,18 @@ export class TrackDb {
     const track = this.findById(id);
     if (!track) throw new NotFoundException(`Track with id: ${id} not found`);
     return track;
+  };
+
+  public findMany = (ids: string[]) => {
+    return this.tracks.filter((track) => ids.indexOf(track.id) > -1);
+  };
+
+  public findManyOrFail = (ids: string[]) => {
+    const tracks = this.findMany(ids);
+    if (tracks.length !== ids.length) {
+      throw new NotFoundException(`Tracks not found`);
+    }
+    return tracks;
   };
 
   public find = () => {
@@ -56,12 +69,6 @@ export class TrackDb {
     return updatedTrack;
   };
 
-  public delete = (id: string) => {
-    this.findByIdOrFail(id);
-    this.tracks = this.tracks.filter((trck) => trck.id !== id);
-    return null;
-  };
-
   public deleteArtist = (artistId: string) => {
     this.tracks = this.tracks.map((track) =>
       track.artistId === artistId ? { ...track, artistId: null } : track,
@@ -73,6 +80,15 @@ export class TrackDb {
     this.tracks = this.tracks.map((track) =>
       track.albumId === albumId ? { ...track, albumId: null } : track,
     );
+    return null;
+  };
+
+  public delete = (id: string) => {
+    this.findByIdOrFail(id);
+    this.tracks = this.tracks.filter((trck) => trck.id !== id);
+
+    db.favorites.tracks.delete(id);
+
     return null;
   };
 }

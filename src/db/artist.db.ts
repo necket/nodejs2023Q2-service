@@ -21,6 +21,18 @@ export class ArtistDb {
     return artist;
   };
 
+  public findMany = (ids: string[]) => {
+    return this.artists.filter((artist) => ids.indexOf(artist.id) > -1);
+  };
+
+  public findManyOrFail = (ids: string[]) => {
+    const artists = this.findMany(ids);
+    if (artists.length !== ids.length) {
+      throw new NotFoundException(`Artists not found`);
+    }
+    return artists;
+  };
+
   public find = () => {
     return this.artists;
   };
@@ -56,6 +68,7 @@ export class ArtistDb {
 
     db.track.deleteArtist(id);
     db.album.deleteArtist(id);
+    db.favorites.artists.delete(id);
 
     return null;
   };

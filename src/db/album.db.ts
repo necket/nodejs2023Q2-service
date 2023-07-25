@@ -21,6 +21,18 @@ export class AlbumDb {
     return album;
   };
 
+  public findMany = (ids: string[]) => {
+    return this.albums.filter((album) => ids.indexOf(album.id) > -1);
+  };
+
+  public findManyOrFail = (ids: string[]) => {
+    const albums = this.findMany(ids);
+    if (albums.length !== ids.length) {
+      throw new NotFoundException(`Albums not found`);
+    }
+    return albums;
+  };
+
   public find = () => {
     return this.albums;
   };
@@ -63,6 +75,7 @@ export class AlbumDb {
     this.albums = this.albums.filter((alb) => alb.id !== id);
 
     db.track.deleteAlbum(id);
+    db.favorites.albums.delete(id);
 
     return null;
   };
