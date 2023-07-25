@@ -61,4 +61,18 @@ export class TrackDb {
     this.tracks = this.tracks.filter((trck) => trck.id !== id);
     return null;
   };
+
+  public deleteArtist = (artistId: string) => {
+    this.tracks = this.tracks.map((track) =>
+      track.artistId === artistId ? { ...track, artistId: null } : track,
+    );
+    return null;
+  };
+
+  public deleteAlbum = (albumId: string) => {
+    this.tracks = this.tracks.map((track) =>
+      track.albumId === albumId ? { ...track, albumId: null } : track,
+    );
+    return null;
+  };
 }

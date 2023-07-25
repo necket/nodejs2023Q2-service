@@ -4,7 +4,7 @@ export const mockTracks: Track[] = [
   {
     id: '749f749a-b841-4a67-a529-ecc625c47b9e',
     name: 'Track #1',
-    artistId: null,
+    artistId: '486f0707-15db-4352-ae34-04342f91f353',
     albumId: null,
     duration: 300,
   },
@@ -18,7 +18,7 @@ export const mockTracks: Track[] = [
   {
     id: '7c0ba607-98b8-4194-8554-b5f7f869dff6',
     name: 'Track #3',
-    artistId: null,
+    artistId: '22170e82-ceba-4f2f-acf9-ecba071985c7',
     albumId: null,
     duration: 320,
   },
