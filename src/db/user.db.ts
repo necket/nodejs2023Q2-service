@@ -44,7 +44,7 @@ export class UserDb {
     const updatedUser = {
       ...user,
       ...fields,
-      version: user.version++,
+      version: user.version + 1,
       updatedAt: Date.now(),
     };
 
