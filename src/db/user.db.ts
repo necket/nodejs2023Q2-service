@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
-import { User } from 'src/types/User';
+import { User } from 'src/db/types/User';
 import { mockUsers } from './mockData/mockUsers';
 
 export class UserDb {
