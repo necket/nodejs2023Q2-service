@@ -11,8 +11,12 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserPasswordDto } from './dto/updateUserPassword.dto';
+import { UserDto } from './dto/user.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { IdParams } from 'src/common/dto/id.params';
 
 @Controller('user')
+@Serialize(UserDto)
 export class UserController {
   constructor(private userService: UserService) {}
 
@@ -22,18 +26,19 @@ export class UserController {
   }
 
   @Get('/:id')
-  getUserById(@Param('id') id: string) {
+  getUserById(@Param() { id }: IdParams) {
     return this.userService.getUserById(id);
   }
 
   @Post()
+  @HttpCode(201)
   createUser(@Body() dto: CreateUserDto) {
     return this.userService.createUser(dto);
   }
 
   @Put('/:id')
   updateUserPassword(
-    @Param('id') id: string,
+    @Param() { id }: IdParams,
     @Body() dto: UpdateUserPasswordDto,
   ) {
     return this.userService.updateUserPassword(id, dto);
@@ -41,7 +46,7 @@ export class UserController {
 
   @Delete('/:id')
   @HttpCode(204)
-  deleteUser(@Param('id') id: string) {
+  deleteUser(@Param() { id }: IdParams) {
     return this.userService.deleteUser(id);
   }
 }
