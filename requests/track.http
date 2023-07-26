@@ -1,0 +1,32 @@
+### Get all tracks
+GET http://localhost:4000/track
+Content-Type: application/json
+
+### Get track by id
+GET http://localhost:4000/track/749f749a-b841-4a67-a529-ecc625c47b9e
+Content-Type: application/json
+
+### Create new track
+POST http://localhost:4000/track
+Content-Type: application/json
+
+{
+  "name": "New Track",
+  "artistId": null,
+  "albumId": null,
+  "duration": 300
+}
+
+### Update track
+PUT http://localhost:4000/track/749f749a-b841-4a67-a529-ecc625c47b9e
+Content-Type: application/json
+
+{
+  "name": "Updated Track",
+  "artistId": null,
+  "albumId": null,
+  "duration": 100
+}
+
+### Delete track 
+DELETE http://localhost:4000/track/749f749a-b841-4a67-a529-ecc625c47b9e

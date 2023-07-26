@@ -1,0 +1,30 @@
+### Get all albums
+GET http://localhost:4000/album
+Content-Type: application/json
+
+### Get album by id
+GET http://localhost:4000/album/b73c84a2-0542-4064-a8f8-7e7f66f27d01
+Content-Type: application/json
+
+### Create new album
+POST http://localhost:4000/album
+Content-Type: application/json
+
+{
+  "name": "New Album",
+  "year": 2025,
+  "artistId": null
+}
+
+### Update album
+PUT http://localhost:4000/album/b73c84a2-0542-4064-a8f8-7e7f66f27d01
+Content-Type: application/json
+
+{
+  "name": "Updated Album",
+  "year": 2030,
+  "artistId": null
+}
+
+### Delete album 
+DELETE http://localhost:4000/album/b73c84a2-0542-4064-a8f8-7e7f66f27d01

@@ -1,0 +1,28 @@
+### Get all artists
+GET http://localhost:4000/artist
+Content-Type: application/json
+
+### Get artist by id
+GET http://localhost:4000/artist/22170e82-ceba-4f2f-acf9-ecba071985c7
+Content-Type: application/json
+
+### Create new artist
+POST http://localhost:4000/artist
+Content-Type: application/json
+
+{
+  "name": "New Artist",
+  "grammy": false
+}
+
+### Update artist
+PUT http://localhost:4000/artist/22170e82-ceba-4f2f-acf9-ecba071985c7
+Content-Type: application/json
+
+{
+  "name": "Artist with Grammy",
+  "grammy": true
+}
+
+### Delete artist 
+DELETE http://localhost:4000/artist/22170e82-ceba-4f2f-acf9-ecba071985c7
