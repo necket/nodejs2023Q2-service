@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Artist } from '../artist/artist.entity';
+import { Album } from '../album/album.entity';
 
 @Entity()
 export class Track {
@@ -17,6 +18,9 @@ export class Track {
 
   @Column({ nullable: true })
   albumId: string | null;
+
+  @ManyToOne(() => Album, (album) => album.tracks, { onDelete: 'SET NULL' })
+  album: Album;
 
   @Column()
   duration: number;

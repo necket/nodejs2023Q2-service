@@ -1,27 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { db } from 'src/db/db';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/createAlbum.dto';
 import { UpdateAlbumDto } from './dto/updateAlbum.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Album } from './album.entity';
 
 @Injectable()
 export class AlbumService {
+  constructor(
+    @InjectRepository(Album) private albumRepository: Repository<Album>,
+  ) {}
+
   public getAllAlbums() {
-    return db.album.find();
+    return this.albumRepository.find();
   }
 
-  public getAlbumById(id: string) {
-    return db.album.findByIdOrFail(id);
+  public async getAlbumById(id: string) {
+    const album = await this.albumRepository.findOneBy({ id });
+
+    if (!album) throw new NotFoundException(`Album with id: ${id} not found`);
+
+    return album;
   }
 
   public createAlbum(createDto: CreateAlbumDto) {
-    return db.album.create(createDto);
+    const album = this.albumRepository.create(createDto);
+    return this.albumRepository.save(album);
   }
 
-  public updateAlbum(id: string, updateDto: UpdateAlbumDto) {
-    return db.album.update(id, updateDto);
+  public async updateAlbum(id: string, updateDto: UpdateAlbumDto) {
+    const album = await this.getAlbumById(id);
+
+    return this.albumRepository.save({ ...album, ...updateDto });
   }
 
-  public deleteAlbum(id: string) {
-    return db.album.delete(id);
+  public async deleteAlbum(id: string) {
+    const album = await this.getAlbumById(id);
+    await this.albumRepository.remove(album);
+
+    return null;
   }
 }
