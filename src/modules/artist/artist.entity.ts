@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Track } from '../track/track.entity';
 
 @Entity()
 export class Artist {
@@ -10,4 +11,7 @@ export class Artist {
 
   @Column({ default: false })
   grammy: boolean;
+
+  @OneToMany(() => Track, (track) => track.artist, { onDelete: 'CASCADE' })
+  tracks: Track[];
 }
