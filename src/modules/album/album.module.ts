@@ -8,5 +8,6 @@ import { Album } from './album.entity';
   imports: [TypeOrmModule.forFeature([Album])],
   controllers: [AlbumController],
   providers: [AlbumService],
+  exports: [TypeOrmModule],
 })
 export class AlbumModule {}

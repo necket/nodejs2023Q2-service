@@ -11,6 +11,7 @@ import { Artist } from './modules/artist/artist.entity';
 import { User } from './modules/user/user.entity';
 import { Track } from './modules/track/track.entity';
 import { Album } from './modules/album/album.entity';
+import { Favorite } from './modules/favorites/favorite.entity';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { Album } from './modules/album/album.entity';
           database: config.get<string>('POSTGRES_USER'),
           username: config.get<string>('POSTGRES_USER'),
           password: config.get<string>('POSTGRES_PASSWORD'),
-          entities: [User, Artist, Track, Album],
+          entities: [User, Artist, Track, Album, Favorite],
           synchronize: true,
         };
       },
