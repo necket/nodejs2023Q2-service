@@ -10,8 +10,8 @@ services:
     container_name: nest-app-db
     volumes:
       - data:/var/lib/postgresql/data
-    ports:
-      - '5432:5432'
+    networks:
+      - nest-app-bridge
 
   nest-app:
     build:
@@ -27,6 +27,13 @@ services:
       - nest-app-db
     volumes:
       - ./src:/app/src
+    networks:
+      - nest-app-bridge
+
+networks:
+  nest-app-bridge:
+    driver: bridge
+    name: 'nest-app-bridge'
 
 volumes:
   data:

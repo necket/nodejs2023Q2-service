@@ -25,7 +25,6 @@ import { Favorite } from './modules/favorites/favorite.entity';
         return {
           type: 'postgres',
           host: 'nest-app-db',
-          port: 5432,
           database: config.get<string>('POSTGRES_USER'),
           username: config.get<string>('POSTGRES_USER'),
           password: config.get<string>('POSTGRES_PASSWORD'),
