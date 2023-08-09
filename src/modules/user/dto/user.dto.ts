@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class UserDto {
   @Expose()
@@ -11,8 +11,10 @@ export class UserDto {
   version: number;
 
   @Expose()
+  @Transform(({ value }) => new Date(value).getTime())
   createdAt: number;
 
   @Expose()
+  @Transform(({ value }) => new Date(value).getTime())
   updatedAt: number;
 }

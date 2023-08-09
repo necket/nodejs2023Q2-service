@@ -1,48 +1,83 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { db } from 'src/db/db';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Track } from '../track/track.entity';
+import { Artist } from '../artist/artist.entity';
+import { Album } from '../album/album.entity';
+import { Favorite } from './favorite.entity';
 
 @Injectable()
 export class FavoritesService {
-  public getAllFavorites() {
-    const artistsIds = db.favorites.artists.find();
-    const albumsIds = db.favorites.albums.find();
-    const tracksIds = db.favorites.tracks.find();
+  constructor(
+    @InjectRepository(Favorite)
+    private favoritesRepository: Repository<Favorite>,
+    @InjectRepository(Artist) private artistRepository: Repository<Artist>,
+    @InjectRepository(Album) private albumRepository: Repository<Album>,
+    @InjectRepository(Track) private trackRepository: Repository<Track>,
+  ) {}
 
-    const artists = db.artist.findMany(artistsIds);
-    const albums = db.album.findMany(albumsIds);
-    const tracks = db.track.findMany(tracksIds);
+  public async getAllFavorites() {
+    const favorites = await this.favoritesRepository.find({
+      relations: { album: true, artist: true, track: true },
+    });
+
+    const artists: Artist[] = [];
+    const albums: Album[] = [];
+    const tracks: Track[] = [];
+
+    favorites.forEach(({ artist, album, track }) => {
+      if (artist) artists.push(artist);
+      if (album) albums.push(album);
+      if (track) tracks.push(track);
+    });
 
     return { artists, albums, tracks };
   }
 
-  public addTrack(id: string) {
-    const track = db.track.findById(id);
+  public async addTrack(id: string) {
+    const track = await this.trackRepository.findOneBy({ id });
     if (!track) this.throwUnprocessableExp('track', id);
-    return db.favorites.tracks.create(id);
+    await this.favoritesRepository.save({ trackId: track.id });
   }
 
-  public addAlbum(id: string) {
-    const album = db.album.findById(id);
+  public async addAlbum(id: string) {
+    const album = await this.albumRepository.findOneBy({ id });
     if (!album) this.throwUnprocessableExp('album', id);
-    return db.favorites.albums.create(id);
+    await this.favoritesRepository.save({ albumId: album.id });
   }
 
-  public addArtist(id: string) {
-    const artist = db.artist.findById(id);
+  public async addArtist(id: string) {
+    const artist = await this.artistRepository.findOneBy({ id });
     if (!artist) this.throwUnprocessableExp('artist', id);
-    return db.favorites.artists.create(id);
+    await this.favoritesRepository.save({ artistId: artist.id });
   }
 
-  public removeTrack(id: string) {
-    return db.favorites.tracks.deleteOrFail(id);
+  public async removeTrack(trackId: string) {
+    const favorite = await this.favoritesRepository.findOneBy({ trackId });
+    if (!favorite) {
+      return new NotFoundException(`Favorites with id: ${trackId} not found`);
+    }
+    await this.favoritesRepository.delete({ trackId });
   }
 
-  public removeAlbum(id: string) {
-    return db.favorites.albums.deleteOrFail(id);
+  public async removeAlbum(albumId: string) {
+    const favorite = await this.favoritesRepository.findOneBy({ albumId });
+    if (!favorite) {
+      return new NotFoundException(`Favorites with id: ${albumId} not found`);
+    }
+    await this.favoritesRepository.delete({ albumId });
   }
 
-  public removeArtist(id: string) {
-    return db.favorites.artists.deleteOrFail(id);
+  public async removeArtist(artistId: string) {
+    const favorite = await this.favoritesRepository.findOneBy({ artistId });
+    if (!favorite) {
+      return new NotFoundException(`Favorites with id: ${artistId} not found`);
+    }
+    await this.favoritesRepository.delete({ artistId });
   }
 
   private throwUnprocessableExp(name: string, id: string) {

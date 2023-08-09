@@ -1,27 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { db } from 'src/db/db';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/createArtist.dto';
 import { UpdateArtistDto } from './dto/updateArtist.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Artist } from './artist.entity';
 
 @Injectable()
 export class ArtistService {
+  constructor(
+    @InjectRepository(Artist) private artistRepository: Repository<Artist>,
+  ) {}
   public getAllArtists() {
-    return db.artist.find();
+    return this.artistRepository.find();
   }
 
-  public getArtistById(id: string) {
-    return db.artist.findByIdOrFail(id);
+  public async getArtistById(id: string) {
+    const artist = await this.artistRepository.findOneBy({ id });
+
+    if (!artist) throw new NotFoundException(`Artist with id: ${id} not found`);
+
+    return artist;
   }
 
   public createArtist(createDto: CreateArtistDto) {
-    return db.artist.create(createDto);
+    const artist = this.artistRepository.create(createDto);
+
+    return this.artistRepository.save(artist);
   }
 
-  public updateArtist(id: string, updateDto: UpdateArtistDto) {
-    return db.artist.update(id, updateDto);
+  public async updateArtist(id: string, updateDto: UpdateArtistDto) {
+    const artist = await this.getArtistById(id);
+
+    return this.artistRepository.save({ ...artist, ...updateDto });
   }
 
-  public deleteArtist(id: string) {
-    return db.artist.delete(id);
+  public async deleteArtist(id: string) {
+    const artist = await this.getArtistById(id);
+    await this.artistRepository.remove(artist);
+
+    return null;
   }
 }
