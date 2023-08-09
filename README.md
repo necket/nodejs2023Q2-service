@@ -7,11 +7,13 @@ Prepare:
 1. Start docker on your machine.
 2. Create `.env` file in root directory based on `.env.example` (you simply can make a copy)
 
+To start app run:
+
 ```
 make dev
 ```
 
-to close application run (and remove all containers):
+To close app (and remove all containers) run:
 
 ```
 make down
