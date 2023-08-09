@@ -1,38 +1,16 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { TrackModule } from './modules/track/track.module';
 import { ArtistModule } from './modules/artist/artist.module';
 import { AlbumModule } from './modules/album/album.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
-import { Artist } from './modules/artist/artist.entity';
-import { User } from './modules/user/user.entity';
-import { Track } from './modules/track/track.entity';
-import { Album } from './modules/album/album.entity';
-import { Favorite } from './modules/favorites/favorite.entity';
+import { dataSourceOptions } from './db/data-source';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: `.env`,
-    }),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'postgres',
-          host: 'nest-app-db',
-          database: config.get<string>('POSTGRES_USER'),
-          username: config.get<string>('POSTGRES_USER'),
-          password: config.get<string>('POSTGRES_PASSWORD'),
-          entities: [User, Artist, Track, Album, Favorite],
-          synchronize: true,
-        };
-      },
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     UserModule,
     TrackModule,
     ArtistModule,

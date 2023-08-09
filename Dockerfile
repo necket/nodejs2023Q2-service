@@ -8,4 +8,6 @@ RUN npm install --force
 
 COPY . .
 
-CMD [ "npm", "run", "start:dev" ]
+RUN npm run build
+
+CMD [ "bash", "-c", "npm run migration:run && npm run start" ]
