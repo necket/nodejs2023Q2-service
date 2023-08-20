@@ -27,6 +27,16 @@ export class UserService {
     return user;
   }
 
+  public async findUser(login: string) {
+    const user = await this.userRepository.findOneBy({ login });
+
+    if (!user) {
+      throw new ForbiddenException(`User with login: ${login} not found`);
+    }
+
+    return user;
+  }
+
   public async createUser(createDto: CreateUserDto) {
     const user = this.userRepository.create(createDto);
     return this.userRepository.save(user);

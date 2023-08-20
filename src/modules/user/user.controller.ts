@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -14,8 +15,10 @@ import { UpdateUserPasswordDto } from './dto/updateUserPassword.dto';
 import { UserDto } from './dto/user.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { IdParams } from 'src/common/dto/id.params';
+import { JwtAuthGuard } from 'src/guards/jwt.guard';
 
 @Controller('user')
+@UseGuards(JwtAuthGuard)
 @Serialize(UserDto)
 export class UserController {
   constructor(private userService: UserService) {}
