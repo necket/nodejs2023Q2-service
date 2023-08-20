@@ -7,6 +7,7 @@ import { ArtistModule } from './modules/artist/artist.module';
 import { AlbumModule } from './modules/album/album.module';
 import { FavoritesModule } from './modules/favorites/favorites.module';
 import { dataSourceOptions } from './db/data-source';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { dataSourceOptions } from './db/data-source';
     ArtistModule,
     AlbumModule,
     FavoritesModule,
+    AuthModule,
   ],
   providers: [
     {
